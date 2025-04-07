@@ -25,7 +25,7 @@
 }
 .buttondiv button:disabled{
   background-color: gray;
-  cursor: none;
+  cursor:none;
 }
 
 #loadingSpinner {

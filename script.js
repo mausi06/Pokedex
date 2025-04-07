@@ -23,6 +23,25 @@ const typeSymbols = {
   fairy: '🧚'
 };
 
+const typeColors = {
+  fire: '#FF5733',
+  water: '#33B5FF',
+  electric: '#FFEB3B',
+  grass: '#4CAF50',
+  bug: '#8BC34A',
+  poison: '#9C27B0',
+  ground: '#795548',
+  normal: '#9E9E9E',
+  flying: '#0288D1',
+  psychic: '#8E24AA',
+  ice: '#03A9F4',
+  dragon: '#E91E63',
+  ghost: '#673AB7',
+  dark: '#212121',
+  steel: '#B0BEC5',
+  fairy: '#F48FB1' 
+};
+
 function init() {
   loadData(currentOffset, 9);
   setupSearch();
@@ -52,9 +71,7 @@ async function loadData(offset, limit) {
 
   if (moreButtonRef) {
     showLoadingSpinner();
-    moreButtonRef.setAttribute('disabled', ''); // Deaktiviert den Button
-  } else {
-    console.error("Button mit der ID 'morebutton' nicht gefunden.");
+    moreButtonRef.setAttribute('disabled', '');
   }
 
   setTimeout(async () => {
@@ -93,7 +110,6 @@ async function loadData(offset, limit) {
     } finally {
       hideLoadingSpinner();
 
-      // Button nur aktivieren, wenn er existiert
       if (moreButtonRef) {
         moreButtonRef.removeAttribute('disabled');
       }
@@ -102,8 +118,6 @@ async function loadData(offset, limit) {
     currentOffset += limit;
   }, 2000);
 }
-
-
 
 function setupSearch() {
   document.getElementById('searchInput').addEventListener('input', function(event) {
