@@ -68,7 +68,7 @@ function showMains(pokemonData) {
     </tr>
     <tr>
       <td class="unity">Abilities</td>
-      <td class="unityinfo" style=" white-space: nowrap;">${pokemonData.abilitiesList}</td>
+      <td class="unityinfo nowrap">${pokemonData.abilitiesList}</td>
     </tr>
   </table>`;
 }
