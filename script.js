@@ -45,7 +45,7 @@ const typeColors = {
 };
 
 function init() {
-  loadData(currentOffset, 9);
+  loadData(currentOffset, 20);
   setupSearch();
 }
 
@@ -53,8 +53,6 @@ function showLoadingSpinner() {
   let spinner = document.getElementById('loadingSpinner');
   if (spinner) {
     spinner.style.display = 'block';
-  } else {
-    console.error("loadingSpinner nicht gefunden.");
   }
 }
 
@@ -62,8 +60,6 @@ function hideLoadingSpinner() {
   let spinner = document.getElementById('loadingSpinner');
   if (spinner) {
     spinner.style.display = 'none';
-  } else {
-    console.error("loadingSpinner nicht gefunden.");
   }
 }
 
@@ -93,7 +89,6 @@ function generateTypesString(types) {
 
   return typesString;
 }
-
 
 function createPokemonCard(pokemonData, typesString, currentIndex) {
   return templateCard(pokemonData, typesString, currentIndex);
@@ -131,7 +126,6 @@ async function loadData(offset, limit) {
       content.innerHTML += pokemonCards;
     } catch (error) {
       content.innerHTML = '<p>Fehler beim Laden der Pokémon-Daten. Bitte versuche es später erneut.</p>';
-      console.error(error);
     } finally {
       hideLoadingSpinner();
 
@@ -181,12 +175,13 @@ function displayAllPokemon() {
 
 function displayFilteredPokemon(pokemonList) {
   let content = document.getElementById('content');
-  content.innerHTML = '';
+  content.innerHTML = ''; // Leere den Inhalt
 
   let pokemonCards = '';
   pokemonList.forEach((pokemon, index) => {
+    // Wir übergeben den globalen Index, der durch das Filtern korrekt gesetzt wird
     let typesString = getTypesString(pokemon);
-    pokemonCards += templateCard(pokemon, typesString, index);
+    pokemonCards += templateCard(pokemon, typesString, allPokemon.findIndex(p => p.name === pokemon.name));  // Hier den globalen Index übergeben
   });
 
   content.innerHTML = pokemonCards;
@@ -205,7 +200,6 @@ function getTypesString(pokemonData) {
 
 function overlayOpen(index) {
   if (index < 0 || index >= allPokemon.length) {
-    console.error('Ungültiger Index:', index);
     return;
   }
 
@@ -213,7 +207,6 @@ function overlayOpen(index) {
   const pokemonData = allPokemon[index];
 
   if (!pokemonData || !pokemonData.types) {
-    console.error('Fehler beim Abrufen der Pokémon-Daten:', pokemonData);
     return;
   }
 
@@ -229,8 +222,8 @@ function overlayOpen(index) {
 }
 
 function overlayClose(event) {
-  var targetID = event.currentTarget.id;
-  let refOverlay = document.getElementById('overlay');
+  const targetID = event.currentTarget.id;
+  const refOverlay = document.getElementById('overlay');
   
   if (targetID === 'overlay') {
     event.stopPropagation();
@@ -351,10 +344,13 @@ async function loadEvolutionChain(pokemonData) {
     evoContainer.innerHTML = evoHTML;
   } catch (error) {
     evoContainer.innerHTML = '<p>Fehler beim Laden der Evolutionskette.</p>';
-    console.error(error);
   }
 }
 
-function loadMore() {
-  loadData(currentOffset, 9);
+async function loadMore() {
+  try {
+    await loadData(currentOffset, 20);
+  } catch(error){
+    console.error('Fehler beim Laden der Pokémon-Daten:', error);
+  }
 }

@@ -12,22 +12,12 @@ body.no-scroll {
   margin: 0 auto;
 }
 
-.buttondiv{
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.fillpage{
+  min-height: calc(100vh - 64px - 64px);
 }
-.buttondiv button{
-  background-color: darkblue;
-  border-radius: 5px;
-  padding: 8px;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-}
-.buttondiv button:disabled{
-  background-color: gray;
-  cursor:none;
+
+.d_none{
+  display: none;
 }
 
 #loadingSpinner {
@@ -39,14 +29,6 @@ body.no-scroll {
   z-index: 1000;
 }
 
-.loader {
-  transform: rotateZ(45deg);
-  perspective: 1000px;
-  border-radius: 50%;
-  width: 48px;
-  height: 48px;
-  color: #FF3D00;
-}
   .loader:before,
   .loader:after {
     content: '';

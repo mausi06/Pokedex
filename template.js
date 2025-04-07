@@ -1,22 +1,21 @@
 function templateCard(pokemonData, typesString, currentIndex) {
-    let type = pokemonData.types[0].type.name; 
+  let type = pokemonData.types[0].type.name; 
   let bgColor = typeColors[type] || '#FFFFFF';
 
   return `<div class="overPokemonCard" onclick="overlayOpen(${currentIndex})">
               <div class="pokemonCard">
-              
                 <div class="pokemonName">${pokemonData.name}</div>
 
                 <div class="pokemonIMGdiv" style="background-color: ${bgColor};">
-                <img class="pokemonIMG" src="${pokemonData.sprites.other['official-artwork'].front_default}" alt="${pokemonData.name}">
+                  <img class="pokemonIMG" src="${pokemonData.sprites.other['official-artwork'].front_default}" alt="${pokemonData.name}">
                 </div>
 
                 <div class="pokemonType">${typesString}</div>
-
               </div>
-          </div>
-          `;
+          </div>`;
 }
+
+
 
 function singlePokemon(pokemonData, typesString) {
   return `<div id="pop-up" onclick="overlayClose(event)">

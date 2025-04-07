@@ -8,10 +8,6 @@
   z-index: 1000;
 }
 
-.d_none{
-  display: none;
-}
-
 #pop-up{
   position: fixed;
   top: 50%;
@@ -30,13 +26,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.buttons-contener{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24px;
 }
 
 .pop-up-header{
