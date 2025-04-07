@@ -21,7 +21,7 @@ function templateCard(pokemonData, typesString, currentIndex) {
 function singlePokemon(pokemonData, typesString) {
   return `<div id="pop-up" onclick="overlayClose(event)">
             <div class="pop-up-header">${pokemonData.name}</div>
-            <div class="pokemonIMGdiv">
+            <div class="pokemonIMGdivpopup">
               <img class="pokemonIMG" src="${pokemonData.sprites.other['official-artwork'].front_default}" alt="${pokemonData.name}">
             </div>
             <div class="pop-up-typesdiv">
@@ -41,7 +41,7 @@ function singlePokemon(pokemonData, typesString) {
                 <div id="statsSection"></div>
               </div>
               <div class="d-none" id="evo">
-                <div id="evoSelection"></div>
+                <div id="evoSelection" style="margin: 8px"></div>
               </div>
             </div>
 
@@ -64,8 +64,12 @@ function showMains(pokemonData) {
       <td class="unityinfo">${pokemonData.weight} kg</td>
     </tr>
     <tr>
-      <td class="unity">Types</td>
-      <td class="unityinfo">${pokemonData.types.map(type => type.type.name).join(', ')}</td>
+      <td class="unity">Base Experience</td>
+      <td class="unityinfo">${pokemonData.baseExperience}</td>
+    </tr>
+    <tr>
+      <td class="unity">Abilities</td>
+      <td class="unityinfo" style=" white-space: nowrap;">${pokemonData.abilitiesList}</td>
     </tr>
   </table>`;
 }
@@ -83,12 +87,10 @@ function showStats(pokemonData) {
 
 
 function showEvolution(pokemonData) {
-  // Wenn die Evolution nicht verfügbar ist, kannst du eine Nachricht anzeigen.
   if (!pokemonData.evolution_chain) {
     return `<p>No evolution data available.</p>`;
   }
   
-  // Beispielhafte Darstellung der Evolution (evtl. anpassen)
   return `<p>Evolution chain: To be implemented</p>`;
 }
 

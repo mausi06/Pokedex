@@ -20,7 +20,9 @@ const typeSymbols = {
   ghost: '👻',
   dark: '🌑',
   steel: '🔩',
-  fairy: '🧚'
+  fairy: '🧚',
+  fighting: '🥊',
+  rock: '⛰️'
 };
 
 const typeColors = {
@@ -65,6 +67,38 @@ function hideLoadingSpinner() {
   }
 }
 
+async function loadPokemonData(pokemonURL) {
+  let pokemonResponse = await fetch(pokemonURL);
+  let pokemonData = await pokemonResponse.json();
+
+  pokemonData.baseExperience = pokemonData.base_experience;
+  pokemonData.abilitiesList = pokemonData.abilities.map(ability => ability.ability.name).join(', ');
+
+  return pokemonData;
+}
+
+function generateTypesString(types) {
+  let typesString = "";
+
+  for (let i = 0; i < types.length; i++) {
+    let typeName = types[i].type.name;
+    let typeSymbol = typeSymbols[typeName];
+
+    if (typesString !== "") {
+      typesString += " ";
+    }
+
+    typesString += typeSymbol;
+  }
+
+  return typesString;
+}
+
+
+function createPokemonCard(pokemonData, typesString, currentIndex) {
+  return templateCard(pokemonData, typesString, currentIndex);
+}
+
 async function loadData(offset, limit) {
   let content = document.getElementById('content');
   let moreButtonRef = document.getElementById('morebutton');
@@ -83,30 +117,21 @@ async function loadData(offset, limit) {
 
       for (let i = 0; i < responseJSON.results.length; i++) {
         let pokemonURL = responseJSON.results[i].url;
-        let pokemonResponse = await fetch(pokemonURL);
-        let pokemonData = await pokemonResponse.json();
+
+        let pokemonData = await loadPokemonData(pokemonURL);
+
+        let typesString = generateTypesString(pokemonData.types);
+        let currentIndex = allPokemon.length;
+
+        pokemonCards += createPokemonCard(pokemonData, typesString, currentIndex);
 
         allPokemon.push(pokemonData);
-
-        let typesString = ""; 
-        let currentIndex = allPokemon.length - 1;
-
-        for (let i = 0; i < pokemonData.types.length; i++) {
-            let typeName = pokemonData.types[i].type.name;
-            let typeSymbol = typeSymbols[typeName];
-
-            if (typesString !== "") {
-                typesString += " ";
-            }
-
-            typesString += typeSymbol;
-        }
-        pokemonCards += templateCard(pokemonData, typesString, currentIndex);
       }
 
       content.innerHTML += pokemonCards;
     } catch (error) {
-      console.error("Fehler beim Laden der Pokémon:", error);
+      content.innerHTML = '<p>Fehler beim Laden der Pokémon-Daten. Bitte versuche es später erneut.</p>';
+      console.error(error);
     } finally {
       hideLoadingSpinner();
 
@@ -199,6 +224,8 @@ function overlayOpen(index) {
   overlayElement.classList.remove('d_none');
 
   selectTab('main');
+
+  document.body.classList.add('no-scroll');
 }
 
 function overlayClose(event) {
@@ -208,6 +235,7 @@ function overlayClose(event) {
   if (targetID === 'overlay') {
     event.stopPropagation();
     refOverlay.classList.add('d_none');
+    document.body.classList.remove('no-scroll');
   } else {
     event.stopPropagation();
   }
@@ -263,44 +291,62 @@ function selectTab(tabName) {
   }
 }
 
+async function fetchEvolutionData(speciesUrl) {
+  const speciesRes = await fetch(speciesUrl);
+  const speciesData = await speciesRes.json();
+  const evoRes = await fetch(speciesData.evolution_chain.url);
+  const evoData = await evoRes.json();
+  return evoData;
+}
+
+function extractEvolutionChain(evoData) {
+  const evoChain = [];
+  let current = evoData.chain;
+
+  while (current) {
+    if (current.species && current.species.name) {
+      evoChain.push(current.species.name);
+    }
+
+    if (current.evolves_to && current.evolves_to.length > 0) {
+      current = current.evolves_to[0];
+    } else {
+      current = null;
+    }
+  }
+
+  return evoChain;
+}
+
+async function createEvolutionHTML(evoChain) {
+  let evoHTML = '<div class="evolution-chain">';
+
+  for (let i = 0; i < evoChain.length; i++) {
+    const name = evoChain[i];
+    const pokeRes = await fetch('https://pokeapi.co/api/v2/pokemon/' + name);
+    const pokeData = await pokeRes.json();
+
+    evoHTML += showEvoChain(pokeData);
+
+    if (i < evoChain.length - 1) {
+      evoHTML += '<div class="arrow">&#8658;</div>';
+    }
+  }
+
+  evoHTML += '</div>';
+  return evoHTML;
+}
+
 async function loadEvolutionChain(pokemonData) {
   const evoContainer = document.getElementById('evoSelection');
   evoContainer.innerHTML = 'Lade Evolutionskette...';
 
   try {
-    const speciesRes = await fetch(pokemonData.species.url);
-    const speciesData = await speciesRes.json();
-    const evoRes = await fetch(speciesData.evolution_chain.url);
-    const evoData = await evoRes.json();
+    const evoData = await fetchEvolutionData(pokemonData.species.url);
 
-    const evoChain = [];
-    let current = evoData.chain;
+    const evoChain = extractEvolutionChain(evoData);
 
-    while (current) {
-      if (current.species && current.species.name) {
-        evoChain.push(current.species.name);
-      }
-
-      if (current.evolves_to && current.evolves_to.length > 0) {
-        current = current.evolves_to[0];
-      } else {
-        current = null;
-      }
-    }
-
-    let evoHTML = '<div class="evolution-chain">';
-    for (let i = 0; i < evoChain.length; i++) {
-      const name = evoChain[i];
-      const pokeRes = await fetch('https://pokeapi.co/api/v2/pokemon/' + name);
-      const pokeData = await pokeRes.json();
-
-      evoHTML += showEvoChain(pokeData);
-
-      if (i < evoChain.length - 1) {
-        evoHTML += '<div class="arrow">&#8658;</div>';
-      }
-    }
-    evoHTML += '</div>';
+    const evoHTML = await createEvolutionHTML(evoChain);
 
     evoContainer.innerHTML = evoHTML;
   } catch (error) {
