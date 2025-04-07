@@ -48,7 +48,14 @@ function hideLoadingSpinner() {
 
 async function loadData(offset, limit) {
   let content = document.getElementById('content');
-  showLoadingSpinner();
+  let moreButtonRef = document.getElementById('morebutton');
+
+  if (moreButtonRef) {
+    showLoadingSpinner();
+    moreButtonRef.setAttribute('disabled', ''); // Deaktiviert den Button
+  } else {
+    console.error("Button mit der ID 'morebutton' nicht gefunden.");
+  }
 
   setTimeout(async () => {
     try {
@@ -85,11 +92,18 @@ async function loadData(offset, limit) {
       console.error("Fehler beim Laden der Pokémon:", error);
     } finally {
       hideLoadingSpinner();
+
+      // Button nur aktivieren, wenn er existiert
+      if (moreButtonRef) {
+        moreButtonRef.removeAttribute('disabled');
+      }
     }
 
     currentOffset += limit;
   }, 2000);
 }
+
+
 
 function setupSearch() {
   document.getElementById('searchInput').addEventListener('input', function(event) {
