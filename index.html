@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./styles/header.css">
+  <link rel="stylesheet" href="./styles/standard.css">
+  <link rel="stylesheet" href="./styles/cards.css">
+  <link rel="stylesheet" href="./styles/popupstyle.css">
+  <script src="script.js"></script>
+  <script src="./template.js"></script>
+</head>
+<body onload="init()">
+  <div onclick="overlayClose(event)" id="overlay" class="d_none"></div>
+
+  </div>
+  
+  <header>
+    <div class="header-div max-width">
+      <img class="headerLogo" src="./img/pokemon-pokeball-legue-logo-png_seeklogo-524672.png" alt="">
+    <input type="text" id="searchInput" placeholder="Search">
+    </div>
+  </header>
+  <div class="middle-section">
+    <div class="fillpage" id="content">
+      <span id="loadingSpinner" class="loader" style="display: none;"></span>
+    </div>
+    <div class="buttondiv">
+      <button onclick="loadMore()">Mehr Pokemon...</button>
+    </div>
+  </div>
+  
+  
+  <footer>
+    <div class="header-div max-width">
+      <img class="headerLogo" src="./img/pokemon-pokeball-legue-logo-png_seeklogo-524672.png" alt="">
+    </div>
+  </footer>
+</body>
+</html>

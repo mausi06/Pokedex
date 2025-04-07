@@ -1,0 +1,147 @@
+#overlay{
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.25);
+  top: 0;
+  bottom: 0;
+  min-height: 100%;
+  width: 100%;
+  z-index: 1000;
+}
+
+.d_none{
+  display: none;
+}
+
+#pop-up{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(134, 96, 82);
+  z-index: 1000;
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+}
+
+.pokemonIMGdiv{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.buttons-contener{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+}
+
+.pop-up-header{
+  text-align: center;
+  font-weight: bold;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid gray;
+}
+
+#propertiesDetails {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 220px;
+  overflow-y: auto
+}
+
+#properties{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.pop-up-typesdiv{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 4px;
+}
+
+.tab{
+  cursor: pointer;
+  text-align: center;
+  padding-top: 4px;
+  padding-right: 16px;
+  padding-left: 16px;
+}
+.tab:hover{
+  border-bottom: 1px solid white;
+  padding-top: 3px;
+}
+
+.d-none{
+  display: none;
+}
+
+#mainSection{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#statsSection{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+table{
+  border: none;
+  width: 70%;
+  margin-top: 16px;
+}
+td{
+  border: none
+}
+.unity{
+  text-align: left;
+}
+.unityinfo{
+  text-align: right;
+}
+
+.buttons-contener{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+}
+
+button{
+  font-size: 30px;
+  background-color: transparent;
+  font-size: 24px;
+  border: none;
+  display: flex;
+  justify-content: end;
+  cursor: pointer;
+}
+
+.evolution-chain {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.evo-stage {
+  text-align: center;
+}
+
+.evo-img {
+  width: 80px;
+  height: 80px;
+}
+
+.arrow {
+  font-size: 24px;
+}
